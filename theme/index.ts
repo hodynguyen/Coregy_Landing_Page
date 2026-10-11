@@ -8,6 +8,7 @@ import { fontSizes } from './foundations/typography'
 export const theme = extendTheme(
   {
     config: {
+      // Fallback only; the visitor's local time picks the mode (lib/color-mode.ts)
       initialColorMode: 'light',
       useSystemColorMode: false,
     },

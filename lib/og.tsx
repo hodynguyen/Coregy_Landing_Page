@@ -1,13 +1,13 @@
 import { ImageResponse } from 'next/og'
 
-import { logoPaths } from '#data/logo-paths'
+import { logoColors, logoSize, mark, wordmarkPath } from '#data/logo-paths'
 
 export const ogSize = { width: 1200, height: 630 }
 export const ogContentType = 'image/png'
 
 // Matches theme primary.500 / gray.900 / gray.600
-const accent = '#3461E6'
-const ink = '#171923'
+const accent = logoColors.accent
+const ink = logoColors.ink
 const muted = '#4A5568'
 
 interface OgImageProps {
@@ -30,11 +30,26 @@ export function renderOgImage({ eyebrow, headline }: OgImageProps) {
           borderTop: `12px solid ${accent}`,
         }}
       >
-        {/* Crop the logo's 1000x250 viewBox to the drawn area */}
-        <svg width={380} height={116} viewBox="20 0 700 214">
-          {logoPaths.map((d) => (
-            <path key={d} fill={ink} d={d} />
-          ))}
+        <svg
+          width={(logoSize.width / logoSize.height) * 72}
+          height={72}
+          viewBox={`0 0 ${logoSize.width} ${logoSize.height}`}
+        >
+          <rect width="48" height="48" rx={mark.radius} fill={accent} />
+          <path
+            d={mark.arc}
+            fill="none"
+            stroke="#fff"
+            strokeWidth={mark.arcWidth}
+            strokeLinecap="round"
+          />
+          <circle
+            cx={mark.dot.cx}
+            cy={mark.dot.cy}
+            r={mark.dot.r}
+            fill="#fff"
+          />
+          <path d={wordmarkPath} fill={ink} />
         </svg>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           <div

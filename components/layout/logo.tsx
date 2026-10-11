@@ -21,7 +21,7 @@ export const Logo = ({ href = '/', onClick }: LogoProps) => {
         borderRadius="sm"
         onClick={onClick}
       >
-        <Box as={LogoMark} height="32px" mt="-4px" />
+        <Box as={LogoMark} height="30px" />
         <VisuallyHidden>{siteConfig.name}</VisuallyHidden>
       </Link>
     </Flex>

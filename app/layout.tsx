@@ -1,5 +1,6 @@
-import { ColorModeScript } from '@chakra-ui/react'
 import Script from 'next/script'
+
+import { colorModeScript } from '#lib/color-mode'
 
 import { metadata } from './(marketing)/metadata'
 import { Provider } from './provider'
@@ -9,19 +10,18 @@ export { metadata }
 const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN
 
 export default function Layout(props: { children: React.ReactNode }) {
-  // Keep in sync with `initialColorMode` in theme/index.ts
+  // Server-rendered default; colorModeScript switches to the visitor's
+  // time-of-day mode before paint (see lib/color-mode.ts)
   const colorMode = 'light'
 
   return (
-    <html lang="en" data-theme={colorMode} style={{ colorScheme: colorMode }}>
+    <html
+      lang="en"
+      data-theme={colorMode}
+      style={{ colorScheme: colorMode }}
+      suppressHydrationWarning
+    >
       <head>
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/static/favicons/logo.png"
-        />
-        <link rel="manifest" href="/static/favicons/manifest.json" />
         {plausibleDomain && (
           <>
             <Script
@@ -36,8 +36,11 @@ export default function Layout(props: { children: React.ReactNode }) {
           </>
         )}
       </head>
-      <body className={`chakra-ui-${colorMode}`}>
-        <ColorModeScript initialColorMode={colorMode} />
+      <body className={`chakra-ui-${colorMode}`} suppressHydrationWarning>
+        <script
+          id="color-mode"
+          dangerouslySetInnerHTML={{ __html: colorModeScript }}
+        />
         <Provider>{props.children}</Provider>
       </body>
     </html>
