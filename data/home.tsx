@@ -110,8 +110,6 @@ const home = {
     role: 'Founder & Lead Engineer',
     // TODO(hody): add founder photo under /public/static/images and set the path here. Initials ("HN") are shown while empty.
     photo: '',
-    // TODO(hody): add founder LinkedIn URL. The link is hidden while empty.
-    linkedin: '',
     bio: "I'm a backend engineer who builds workflow automation systems for enterprise teams. I started Coregy to bring the same engineering standards to small businesses: AI agents that are tested, monitored and actually hold up on real data, not demos that break in week two.",
   },
   proof: {

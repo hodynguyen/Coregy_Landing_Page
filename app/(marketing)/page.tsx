@@ -254,9 +254,9 @@ const FounderSection = () => {
                 </Text>
               </Box>
               <Text fontSize="lg">{founder.bio}</Text>
-              {founder.linkedin && (
+              {siteConfig.linkedinUrl && (
                 <Link
-                  href={founder.linkedin}
+                  href={siteConfig.linkedinUrl}
                   isExternal
                   display="inline-flex"
                   alignItems="center"
@@ -267,7 +267,7 @@ const FounderSection = () => {
                   _dark={{ color: 'primary.300' }}
                 >
                   <Icon as={FaLinkedin} />
-                  LinkedIn
+                  Coregy on LinkedIn
                 </Link>
               )}
             </Stack>

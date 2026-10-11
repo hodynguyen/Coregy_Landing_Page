@@ -5,7 +5,6 @@ Placeholders that still need real content. Search the code for `TODO(hody)`.
 | What | Where |
 |---|---|
 | Founder photo. Put it under `public/static/images/` and set `founder.photo`. Until then the avatar shows the initials "HN". | `data/home.tsx` (`founder.photo`) |
-| Founder LinkedIn URL. The link is hidden until it is set. | `data/home.tsx` (`founder.linkedin`) |
 | Real, approved testimonials or case studies. Then set `flags.showProof: true`. | `data/home.tsx` (`proof.items`), `data/config.tsx` (`flags.showProof`) |
 | Replace privacy policy and terms with reviewed legal text (pages show a warning banner until then) | `data/legal.ts` |
 | Formspree endpoint: set `NEXT_PUBLIC_FORM_ENDPOINT` on Vercel, redeploy, then test the endpoint path (success + error). | Vercel env vars |
