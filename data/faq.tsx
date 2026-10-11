@@ -1,54 +1,29 @@
-import * as React from 'react'
-
 const faq = {
   title: 'Frequently asked questions',
   items: [
     {
-      q: 'Is Coregy suitable for my business?',
-      a: (
-        <>
-          Definitely! Coregy provides tailored software outsourcing solutions
-          for businesses of all sizes—from startups to global enterprises.
-          Whether you need digital transformation, AI automation, or a
-          full-stack product team, we can support your growth journey.
-        </>
-      ),
+      q: 'What happens to my data?',
+      a: "Agents connect to your own tools with least-privilege access. We don't sell your data or use it to train public models.",
     },
     {
-      q: 'Which platforms and systems does Coregy support?',
-      a: (
-        <>
-          We support integrations with popular platforms such as{' '}
-          <strong>Shopify, Magento, Odoo, SAP</strong>, and more. From
-          e-commerce and ERP to custom web and mobile apps, our team ensures
-          seamless implementation and long-term scalability.
-        </>
-      ),
+      q: 'What if the agent makes a mistake?',
+      a: 'Agents draft and flag; a person on your team approves until accuracy is proven on your data.',
     },
     {
-      q: 'Does Coregy offer automation and AI services?',
-      a: (
-        <>
-          Absolutely. Our <strong>AI Agents</strong> help businesses automate
-          workflows, customer support, and reporting. We also provide{' '}
-          <strong>custom AI model integration</strong>, including chatbots,
-          recommendation systems, and intelligent decision-making tools.
-        </>
-      ),
+      q: 'Do I need technical staff?',
+      a: 'No. We handle the build and maintenance.',
     },
     {
-      q: 'Can Coregy help with Zalo-based solutions?',
-      a: (
-        <>
-          Yes! We offer end-to-end Zalo integration including{' '}
-          <strong>
-            Zalo Mini App, Zalo OA, Marketing Automation (ZNS), and Chatbot
-            Development
-          </strong>
-          . These tools help streamline customer engagement and boost conversion
-          across Zalo channels.
-        </>
-      ),
+      q: 'Which tools do you work with?',
+      a: 'Email (Gmail/Outlook), Xero, QuickBooks, Google Workspace, Microsoft 365, Jira/Confluence, and most tools with an API.',
+    },
+    {
+      q: 'What does the pilot cost?',
+      a: "Nothing. If it doesn't save you time, you walk away.",
+    },
+    {
+      q: 'Where are you based?',
+      a: "We're based in Ho Chi Minh City, Vietnam, and work Australian, New Zealand and Singapore business hours.",
     },
   ],
 }

@@ -2,11 +2,11 @@ import {
   Box,
   CloseButton,
   Flex,
-  HStack,
   IconButton,
   IconButtonProps,
   LinkProps,
   Stack,
+  Text,
   useBreakpointValue,
   useColorModeValue,
   useUpdateEffect,
@@ -19,38 +19,32 @@ import { RemoveScroll } from 'react-remove-scroll'
 
 import * as React from 'react'
 
+import { ButtonLink } from '#components/button-link/button-link'
 import { Logo } from '#components/layout/logo'
 import siteConfig from '#data/config'
+import { usePilotHref } from '#hooks/use-pilot-href'
+import { track } from '#lib/analytics'
 
 interface NavLinkProps extends LinkProps {
-  label: string
-  href?: string
-  isActive?: boolean
+  href: string
 }
 
-function NavLink({ href, children, isActive, ...rest }: NavLinkProps) {
+function NavLink({ href, children, ...rest }: NavLinkProps) {
   const pathname = usePathname()
-  const bgActiveHoverColor = useColorModeValue('gray.100', 'whiteAlpha.100')
-
-  const [, group] = href?.split('/') || []
-  isActive = isActive ?? pathname?.includes(group)
+  const bgHoverColor = useColorModeValue('gray.100', 'whiteAlpha.100')
+  const isActive = pathname === href
 
   return (
     <Link
       href={href}
-      display="inline-flex"
-      flex="1"
+      display="flex"
       minH="40px"
       px="8"
       py="3"
       transition="0.2s all"
       fontWeight={isActive ? 'semibold' : 'medium'}
-      borderColor={isActive ? 'purple.400' : undefined}
       borderBottomWidth="1px"
-      color={isActive ? 'white' : undefined}
-      _hover={{
-        bg: isActive ? 'purple.500' : bgActiveHoverColor,
-      }}
+      _hover={{ bg: bgHoverColor, textDecoration: 'none' }}
       {...rest}
     >
       {children}
@@ -66,13 +60,13 @@ interface MobileNavContentProps {
 export function MobileNavContent(props: MobileNavContentProps) {
   const { isOpen, onClose = () => {} } = props
   const closeBtnRef = React.useRef<HTMLButtonElement>(null)
-  const pathname = usePathname()
-  const bgColor = useColorModeValue('whiteAlpha.900', 'blackAlpha.900')
+  const bgColor = useColorModeValue('white', 'gray.900')
+  const pilotHref = usePilotHref()
 
   useRouteChanged(onClose)
-  console.log({ isOpen })
+
   /**
-   * Scenario: Menu is open on mobile, and user resizes to desktop/tablet viewport.
+   * Scenario: Menu is open on mobile, and user resizes to desktop viewport.
    * Result: We'll close the menu
    */
   const showOnBreakpoint = useBreakpointValue({ base: true, lg: false })
@@ -91,49 +85,69 @@ export function MobileNavContent(props: MobileNavContentProps) {
     }
   }, [isOpen])
 
+  if (!isOpen) return null
+
   return (
-    <>
-      {isOpen && (
-        <RemoveScroll forwardProps>
-          <Flex
-            direction="column"
-            w="100%"
-            bg={bgColor}
-            h="100vh"
-            overflow="auto"
-            pos="absolute"
-            inset="0"
-            zIndex="modal"
-            pb="8"
-            backdropFilter="blur(5px)"
+    <RemoveScroll forwardProps>
+      <Flex
+        direction="column"
+        w="100%"
+        bg={bgColor}
+        h="100vh"
+        overflow="auto"
+        pos="fixed"
+        inset="0"
+        zIndex="modal"
+        pb="8"
+      >
+        <Flex justify="space-between" px="8" pt="4" pb="4">
+          <Logo />
+          <CloseButton ref={closeBtnRef} onClick={onClose} />
+        </Flex>
+        <Stack alignItems="stretch" spacing="0">
+          {siteConfig.header.links.map(({ href, id, label, children }) =>
+            children ? (
+              <Box key={label}>
+                <Text
+                  px="8"
+                  pt="4"
+                  pb="1"
+                  fontSize="sm"
+                  fontWeight="semibold"
+                  color="muted"
+                  textTransform="uppercase"
+                  letterSpacing="wide"
+                >
+                  {label}
+                </Text>
+                {children.map((child) => (
+                  <NavLink key={child.href} href={child.href} onClick={onClose}>
+                    {child.label}
+                  </NavLink>
+                ))}
+              </Box>
+            ) : (
+              <NavLink key={label} href={href || `/#${id}`} onClick={onClose}>
+                {label}
+              </NavLink>
+            ),
+          )}
+        </Stack>
+        <Box px="8" pt="8">
+          <ButtonLink
+            href={pilotHref}
+            colorScheme="primary"
+            width="full"
+            onClick={() => {
+              track('cta_book_pilot_click', { location: 'mobile_nav' })
+              onClose()
+            }}
           >
-            <Box>
-              <Flex justify="space-between" px="8" pt="4" pb="4">
-                <Logo />
-                <HStack spacing="5">
-                  <CloseButton ref={closeBtnRef} onClick={onClose} />
-                </HStack>
-              </Flex>
-              <Stack alignItems="stretch" spacing="0">
-                {siteConfig.header.links.map(
-                  ({ href, id, label, ...props }, i) => {
-                    return (
-                      <NavLink
-                        href={href || `/#${id}`}
-                        key={i}
-                        {...(props as any)}
-                      >
-                        {label}
-                      </NavLink>
-                    )
-                  },
-                )}
-              </Stack>
-            </Box>
-          </Flex>
-        </RemoveScroll>
-      )}
-    </>
+            {siteConfig.header.cta.label}
+          </ButtonLink>
+        </Box>
+      </Flex>
+    </RemoveScroll>
   )
 }
 
@@ -142,7 +156,7 @@ export const MobileNavButton = React.forwardRef(
     return (
       <IconButton
         ref={ref}
-        display={{ base: 'flex', md: 'none' }}
+        display={{ base: 'flex', lg: 'none' }}
         fontSize="20px"
         color={useColorModeValue('gray.800', 'inherit')}
         variant="ghost"

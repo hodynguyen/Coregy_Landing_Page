@@ -1,38 +1,16 @@
-# Coregy - AI-Powered Digital Transformation
+# Coregy landing page
 
-Coregy is an AI-driven platform providing **comprehensive digital solutions** for businesses. We specialize in **e-commerce, digital transformation, AI automation, and full-service Zalo solutions**, helping businesses **optimize operations, increase efficiency, and enhance customer engagement**.
+Marketing site for [Coregy](https://coregy.com.vn): production-grade AI agents that take over one repetitive workflow for small and mid-sized businesses in Australia, New Zealand and Singapore. The site's goal is to get qualified businesses to book a free 2-week pilot.
 
-## 🌐 Official Website
+## Development
 
-🔗 [Coregy](https://coregy.com.vn)
+```bash
+npm ci
+npm run dev     # http://localhost:3000
+npm run build
+npm run lint
+```
 
-## 📖 Documentation
+Copy `.env.example` to `.env.local` to configure the pilot form endpoint, booking link and analytics. All site copy lives in `data/`.
 
-📚 [Coregy Docs](https://doc.coregy.com.vn)
-
-## 🚀 Our Services
-
-### **E-commerce Solutions**
-
-- Magento 2 Development & Optimization
-- Shopify Store Customization & Integration
-
-### **Digital Transformation**
-
-- Odoo ERP Customization & Implementation
-
-### **AI Agents & Automation**
-
-- AI-powered Chatbots for Customer Support
-- Trading Bots for Automated Financial Transactions
-
-### **Full-Service Zalo Solutions**
-
-- Zalo Mini App Development
-- Zalo OA (Official Account) Setup & Management
-- Zalo Chat Tool & Automation
-- Zalo Marketing & Customer Engagement
-
-Coregy empowers businesses with **scalable, AI-driven solutions** to **streamline operations and maximize efficiency**.
-
-🚀 **Transform your business with Coregy today!**
+Open placeholders are tracked in [TODO-HODY.md](TODO-HODY.md).

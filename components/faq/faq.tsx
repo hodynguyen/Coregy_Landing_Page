@@ -1,5 +1,6 @@
-import { chakra, SimpleGrid } from '@chakra-ui/react'
-import { Section, SectionProps, SectionTitle } from 'components/section'
+import { SimpleGrid, chakra } from '@chakra-ui/react'
+
+import { Section, SectionProps, SectionTitle } from '#components/section'
 
 interface FaqProps extends Omit<SectionProps, 'title' | 'children'> {
   title?: React.ReactNode
@@ -12,9 +13,10 @@ export const Faq: React.FC<FaqProps> = (props) => {
     title = 'Frequently asked questions',
     description,
     items = [],
+    ...rest
   } = props
   return (
-    <Section id="faq">
+    <Section id="faq" {...rest}>
       <SectionTitle title={title} description={description} />
 
       <SimpleGrid columns={[1, null, 2]} spacingY={10} spacingX="20">
@@ -37,7 +39,9 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {
       <chakra.dt fontWeight="semibold" mb="2">
         {question}
       </chakra.dt>
-      <chakra.dd color="muted">{answer}</chakra.dd>
+      <chakra.dd color="muted" fontSize="md">
+        {answer}
+      </chakra.dd>
     </chakra.dl>
   )
 }

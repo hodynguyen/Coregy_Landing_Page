@@ -11,6 +11,7 @@ import {
 import { Link, LinkProps } from '@saas-ui/react'
 
 import siteConfig from '#data/config'
+import { Logo as LogoMark } from '#data/logo'
 
 export interface FooterProps extends BoxProps {
   columns?: number
@@ -19,32 +20,41 @@ export interface FooterProps extends BoxProps {
 export const Footer: React.FC<FooterProps> = (props) => {
   const { columns = 2, ...rest } = props
   return (
-    <Box bg="white" _dark={{ bg: 'gray.900' }} {...rest}>
-      <Container maxW="container.2xl" px="8" py="8">
+    <Box
+      bg="white"
+      borderTopWidth="1px"
+      borderColor="gray.200"
+      _dark={{ bg: 'gray.900', borderColor: 'whiteAlpha.200' }}
+      {...rest}
+    >
+      <Container maxW="container.xl" px={{ base: 4, md: 8 }} py="10">
         <SimpleGrid
           columns={{ base: 1, md: columns }}
           spacing={{ base: 8, md: 0 }}
         >
-          <Stack spacing="8">
+          <Stack spacing="6">
             <Stack alignItems="flex-start">
               <Flex>
-                <Box as={siteConfig.logo} flex="1" height="32px" />
+                <Box as={LogoMark} flex="1" height="32px" />
               </Flex>
-              <Text fontSize="md" color="muted">
+              <Text fontSize="md" color="muted" maxW="md">
                 {siteConfig.seo.description}
               </Text>
             </Stack>
-            <Copyright>{siteConfig.footer.copyright}</Copyright>
+            <Copyright>
+              © {new Date().getFullYear()} {siteConfig.name}. All rights
+              reserved.
+            </Copyright>
           </Stack>
 
           <HStack
             justify={{ base: 'flex-start', md: 'flex-end' }}
-            spacing="4"
+            spacing="6"
             alignSelf={{ base: 'flex-start', md: 'flex-end' }}
             wrap="wrap"
           >
-            {siteConfig.footer?.links?.map(({ href, label }) => (
-              <FooterLink key={href} href={href}>
+            {siteConfig.footer.links.map(({ href, label, isExternal }) => (
+              <FooterLink key={href} href={href} isExternal={isExternal}>
                 {label}
               </FooterLink>
             ))}
@@ -56,21 +66,13 @@ export const Footer: React.FC<FooterProps> = (props) => {
 }
 
 export interface CopyrightProps {
-  title?: React.ReactNode
   children: React.ReactNode
 }
 
-export const Copyright: React.FC<CopyrightProps> = ({
-  title,
-  children,
-}: CopyrightProps) => {
-  let content
-  if (title && !children) {
-    content = `&copy; ${new Date().getFullYear()} - ${title}`
-  }
+export const Copyright: React.FC<CopyrightProps> = ({ children }) => {
   return (
     <Text color="muted" fontSize="sm">
-      {content || children}
+      {children}
     </Text>
   )
 }
@@ -83,7 +85,8 @@ export const FooterLink: React.FC<LinkProps> = (props) => {
       fontSize="sm"
       textDecoration="none"
       _hover={{
-        color: 'white',
+        color: 'gray.900',
+        _dark: { color: 'white' },
         transition: 'color .2s ease-in',
       }}
       {...rest}

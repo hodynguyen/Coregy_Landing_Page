@@ -8,17 +8,24 @@ import { fontSizes } from './foundations/typography'
 export const theme = extendTheme(
   {
     config: {
-      initialColorMode: 'dark',
+      initialColorMode: 'light',
       useSystemColorMode: false,
     },
     styles: {
-      global: (props: any) => ({
+      global: () => ({
+        html: {
+          scrollBehavior: 'smooth',
+        },
+        // Keep anchored sections clear of the fixed header
+        '[id]': {
+          scrollMarginTop: '80px',
+        },
         body: {
           color: 'gray.900',
           bg: 'white',
           fontSize: 'lg',
           _dark: {
-            color: 'white',
+            color: 'gray.50',
             bg: 'gray.900',
           },
         },
@@ -29,18 +36,19 @@ export const theme = extendTheme(
       body: 'Inter Variable, Inter, sans-serif',
     },
     fontSizes,
+    // Single accent color used for CTAs, links and icons
     colors: {
       primary: {
-        50: '#E3F2FD',
-        100: '#BBDEFB',
-        200: '#90CAF9',
-        300: '#64B5F6',
-        400: '#42A5F5',
-        500: '#0D47A1', // Màu chính
-        600: '#1565C0', // Xanh đậm hơn
-        700: '#0D47A1', // Xanh navy
-        800: '#0B3D91',
-        900: '#072D74',
+        50: '#EEF4FF',
+        100: '#D9E5FF',
+        200: '#B6CCFE',
+        300: '#8AAAFB',
+        400: '#5B82F5',
+        500: '#3461E6',
+        600: '#2449C4',
+        700: '#1E3A9E',
+        800: '#1E347D',
+        900: '#1C2F63',
       },
     },
     components,

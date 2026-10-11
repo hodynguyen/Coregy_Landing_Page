@@ -12,11 +12,7 @@ import { FiCheck } from 'react-icons/fi'
 
 import React from 'react'
 
-import {
-  ButtonLink,
-  ButtonLinkProps,
-} from '#components/button-link/button-link'
-import { BackgroundGradient } from '#components/gradients/background-gradient'
+import { ButtonLink } from '#components/button-link/button-link'
 import { Section, SectionProps, SectionTitle } from '#components/section'
 
 export interface PricingPlan {
@@ -24,62 +20,56 @@ export interface PricingPlan {
   title: React.ReactNode
   description: React.ReactNode
   price: React.ReactNode
-  features: Array<PricingFeatureProps | null>
-  action: ButtonLinkProps & { label?: string }
+  features: Array<PricingFeatureProps>
+  action?: { href: string; label: string }
   isRecommended?: boolean
 }
 
-export interface PricingProps extends SectionProps {
+export interface PricingProps extends Omit<SectionProps, 'children'> {
   description: React.ReactNode
   plans: Array<PricingPlan>
+  onAction?: (plan: PricingPlan) => void
+  children?: React.ReactNode
 }
 
 export const Pricing: React.FC<PricingProps> = (props) => {
-  const { children, plans, title, description, ...rest } = props
+  const { children, plans, title, description, onAction, ...rest } = props
 
   return (
-    <Section id="pricing" pos="relative" {...rest}>
-      <BackgroundGradient height="100%" />
-      <Box zIndex="2" pos="relative">
-        <SectionTitle title={title} description={description}></SectionTitle>
+    <Section id="pricing" {...rest}>
+      <SectionTitle title={title} description={description} />
 
-        <SimpleGrid columns={[1, null, 3]} spacing={4}>
-          {plans?.map((plan) => (
-            <PricingBox
-              key={plan.id}
-              title={plan.title}
-              description={plan.description}
-              price={plan.price}
-              sx={
-                plan.isRecommended
-                  ? {
-                      borderColor: 'primary.500',
-                      _dark: {
-                        borderColor: 'primary.500',
-                        bg: 'blackAlpha.300',
-                      },
-                    }
-                  : {}
-              }
-            >
-              <PricingFeatures>
-                {plan.features.map((feature, i) =>
-                  feature ? (
-                    <PricingFeature key={i} {...feature} />
-                  ) : (
-                    <br key={i} />
-                  ),
-                )}
-              </PricingFeatures>
-              <ButtonLink colorScheme="primary" {...plan.action}>
-                {plan.action.label || 'Sign Up'}
+      <SimpleGrid columns={[1, null, 3]} spacing={6}>
+        {plans.map((plan) => (
+          <PricingBox
+            key={plan.id}
+            title={plan.title}
+            description={plan.description}
+            price={plan.price}
+            {...(plan.isRecommended && {
+              borderColor: 'primary.500',
+              _dark: { bg: 'gray.800', borderColor: 'primary.300' },
+            })}
+          >
+            <PricingFeatures>
+              {plan.features.map((feature, i) => (
+                <PricingFeature key={i} {...feature} />
+              ))}
+            </PricingFeatures>
+            {plan.action && (
+              <ButtonLink
+                colorScheme="primary"
+                href={plan.action.href}
+                onClick={() => onAction?.(plan)}
+              >
+                {plan.action.label}
               </ButtonLink>
-            </PricingBox>
-          ))}
-        </SimpleGrid>
+            )}
+          </PricingBox>
+        ))}
+      </SimpleGrid>
 
-        {children}
-      </Box>
+      {children}
     </Section>
   )
 }
@@ -88,13 +78,7 @@ const PricingFeatures: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   return (
-    <VStack
-      align="stretch"
-      justifyContent="stretch"
-      spacing="4"
-      mb="8"
-      flex="1"
-    >
+    <VStack align="stretch" spacing="3" mb="8" flex="1">
       {children}
     </VStack>
   )
@@ -108,9 +92,14 @@ export interface PricingFeatureProps {
 const PricingFeature: React.FC<PricingFeatureProps> = (props) => {
   const { title, iconColor = 'primary.500' } = props
   return (
-    <HStack>
-      <Icon as={FiCheck} color={iconColor} />
-      <Text flex="1" fontSize="sm">
+    <HStack align="flex-start">
+      <Icon
+        as={FiCheck}
+        color={iconColor}
+        _dark={{ color: 'primary.300' }}
+        mt="1"
+      />
+      <Text flex="1" fontSize="md">
         {title}
       </Text>
     </HStack>
@@ -127,28 +116,26 @@ const PricingBox: React.FC<PricingBoxProps> = (props) => {
   const { title, description, price, children, ...rest } = props
   return (
     <VStack
-      zIndex="2"
-      bg="whiteAlpha.600"
-      borderRadius="md"
+      bg="white"
+      borderRadius="lg"
       p="8"
       flex="1 0"
       alignItems="stretch"
-      border="1px solid"
-      borderColor="gray.400"
-      _dark={{
-        bg: 'blackAlpha.300',
-        borderColor: 'gray.800',
-      }}
+      borderWidth="1px"
+      borderColor="gray.200"
+      _dark={{ bg: 'gray.800', borderColor: 'whiteAlpha.200' }}
       {...rest}
     >
-      <Heading as="h3" size="md" fontWeight="bold" fontSize="lg" mb="2">
+      <Heading as="h3" fontSize="xl" fontWeight="semibold">
         {title}
       </Heading>
-      <Box color="muted">{description}</Box>
-      <Box fontSize="2xl" fontWeight="bold" py="4">
+      <Box color="muted" fontSize="md">
+        {description}
+      </Box>
+      <Box fontSize="3xl" fontWeight="bold" py="4">
         {price}
       </Box>
-      <VStack align="stretch" justifyContent="stretch" spacing="4" flex="1">
+      <VStack align="stretch" spacing="4" flex="1">
         {children}
       </VStack>
     </VStack>

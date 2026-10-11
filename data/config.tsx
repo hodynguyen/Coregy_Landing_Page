@@ -1,112 +1,69 @@
-import { Button } from '@chakra-ui/react'
-import { Link } from '@saas-ui/react'
-import { NextSeoProps } from 'next-seo'
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
-import { FiCheck } from 'react-icons/fi'
+// Plain data only (no components) so it can be imported from server files
+// such as app/(marketing)/metadata.ts.
 
-import { Logo } from './logo'
+export interface NavItem {
+  label: string
+  // Section id on the home page, rendered as `/#<id>` and tracked by scrollspy
+  id?: string
+  href?: string
+  children?: Array<{ label: string; href: string; description?: string }>
+}
 
 const siteConfig = {
-  logo: Logo,
+  name: 'Coregy',
+  url: 'https://coregy.com.vn',
+  contactEmail: 'contact@coregy.com.vn',
+  linkedinUrl: 'https://www.linkedin.com/company/coregy',
   seo: {
-    title: 'Coregy',
+    title: 'Coregy — AI agents for small & mid-sized businesses',
+    titleTemplate: '%s · Coregy',
     description:
-      'Coregy provides full-service software outsourcing for businesses — from custom development and e-commerce platforms to AI automation and enterprise system integration.',
-  } as NextSeoProps,
-  termsUrl: '#',
-  privacyUrl: '#',
+      'Production-grade AI agents that take over one repetitive workflow for small and mid-sized businesses. Start with a free 2-week pilot.',
+  },
+  // Sections that need real proof stay hidden until it exists
+  flags: {
+    // TODO(hody): set to true once data/home.tsx `proof.items` has real, approved testimonials
+    showProof: false,
+  },
   header: {
     links: [
       {
-        id: 'docs',
-        label: 'Docs',
-        href: 'https://docs.coregy.com.vn',
+        label: 'Solutions',
+        children: [
+          {
+            label: 'Quote & Order Agent',
+            href: '/solutions/quotes',
+            description: 'Draft quotes from email requests',
+          },
+          {
+            label: 'Back-office Document Agent',
+            href: '/solutions/documents',
+            description: 'Invoices and receipts into Xero or QuickBooks',
+          },
+          {
+            label: 'Scope Guard',
+            href: '/solutions/software-teams',
+            description: 'Catch out-of-scope requests in Jira',
+          },
+        ],
       },
-      {
-        id: 'features',
-        label: 'Features',
-      },
-      {
-        id: 'pricing',
-        label: 'Pricing',
-      },
-      {
-        id: 'faq',
-        label: 'FAQ',
-      },
-      {
-        label: 'Login',
-        href: '/login',
-      },
-      {
-        label: 'Sign Up',
-        href: '/signup',
-        variant: 'primary',
-      },
-    ],
+      { id: 'how-it-works', label: 'How it works' },
+      { id: 'pricing', label: 'Pricing' },
+      { id: 'faq', label: 'FAQ' },
+    ] as NavItem[],
+    cta: {
+      label: 'Book a free pilot',
+    },
   },
   footer: {
-    copyright: (
-      <>
-        Built by{' '}
-        <Link href="https://www.linkedin.com/company/coregy">Coregy Team</Link>
-        <br />
-        Copyright © 2025 Coregy. All rights reserved.
-      </>
-    ),
     links: [
-      {
-        href: 'mailto:contact@coregy.com.vn',
-        label: 'Contact',
-      },
+      { href: '/privacy', label: 'Privacy' },
+      { href: '/terms', label: 'Terms' },
+      { href: 'mailto:contact@coregy.com.vn', label: 'Contact' },
       {
         href: 'https://www.linkedin.com/company/coregy',
-        label: <FaLinkedin size="14" />,
-      },
-      {
-        href: 'https://github.com/hodynguyen/Coregy_Landing_Page',
-        label: <FaGithub size="14" />,
-      },
-      {
-        href: 'https://twitter.com/coregy',
-        label: <FaTwitter size="14" />,
-      },
-      {
-        href: '/',
-        label: 'Terms',
-      },
-      {
-        href: '/',
-        label: 'Privacy',
-      },
-    ],
-  },
-  signup: {
-    title: 'Start building with Coregy',
-    features: [
-      {
-        icon: FiCheck,
-        title: 'Scalable',
-        description:
-          'Designed to support growth across all business sizes — from startups to large enterprises.',
-      },
-      {
-        icon: FiCheck,
-        title: 'Flexible',
-        description:
-          'Custom-built software and automation tailored to your specific industry and workflow.',
-      },
-      {
-        icon: FiCheck,
-        title: 'Seamlessly Integrated',
-        description:
-          'Works perfectly with Shopify, Odoo, Zalo, and other enterprise systems.',
-      },
-      {
-        icon: FiCheck,
-        title: 'AI-Optimized',
-        description:
-          'Enhance productivity and decision-making through intelligent automation and smart tools.',
+        label: 'LinkedIn',
+        isExternal: true,
       },
     ],
   },
